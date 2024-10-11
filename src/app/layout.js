@@ -20,6 +20,11 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <head>
+      {/* <!-- FOR FONT AWASOME --> */}
+      <script src="https://kit.fontawesome.com/e3eef4a801.js" crossorigin="anonymous"></script>
+
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
