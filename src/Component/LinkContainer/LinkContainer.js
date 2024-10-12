@@ -13,7 +13,7 @@ function LinkContainer(props) {
         {
             type:"Github",
             icon:"fa-github",
-            Validation:"www.github.com",
+            Validation:"github.com",
             color:"bg-black"
         },
         {
@@ -44,11 +44,10 @@ function LinkContainer(props) {
 
 
 
-    const LinkHandler =(uid, Names, info)=>{
+    const LinkHandler =(uid, Names, info, typeInfo)=>{
 
         // console.log("Data of Change Data")
         // console.log(info)
-        var Name = Names;
 
 
         if(LinksData.length > 0){
@@ -62,7 +61,10 @@ function LinkContainer(props) {
 
                 let restData = LinksData.filter(f=> f.id != uid)
                 let particularData = LinksData.filter(f=> f.id == uid)
-                let thisData = {...particularData[0], Name:info}
+                
+                var thisData;
+                if(typeInfo){   thisData = {...particularData[0],[Names]:info, typeInfo}}
+                else{   thisData = {...particularData[0],[Names]:info}}
                 
 
                 setLinksData([...restData, thisData])
@@ -70,7 +72,7 @@ function LinkContainer(props) {
                 console.log("I am here in 2nd if")
             }
             else{
-                let thisData = {name:info, uid}
+                let thisData = {name:info, id: uid, typeInfo}
                 setLinksData([...LinksData, thisData])
 
                 console.log("I am here in 2nd else")
@@ -78,7 +80,7 @@ function LinkContainer(props) {
             }
         }
         else{
-            let thisData = {name:info, uid}
+            let thisData = {name:info, id: uid, typeInfo}
             setLinksData([...LinksData, thisData])
             console.log("I am here in 1st else")
         }
@@ -96,7 +98,40 @@ function LinkContainer(props) {
 
 
 
+    const GetAdressValidation=(LinkID)=>{
+        try {
+            const GivenLinkPart1 =  new URL(LinksData.filter(f=> f.id == LinkID)[0]?.address)?.origin?.split(".")[new URL(LinksData.filter(f=> f.id == LinkID)[0]?.address).origin.split(".").length-2]
+            const GivenLinkPart2 =  new URL(LinksData.filter(f=> f.id == LinkID)[0]?.address)?.origin?.split(".")[new URL(LinksData.filter(f=> f.id == LinkID)[0]?.address).origin.split(".").length-1]
+            var combinedLink = `${GivenLinkPart1}.${GivenLinkPart2}`
 
+            const validationLink = LinksData.filter(f=> f.id == LinkID)[0]?.typeInfo?.Validation;
+
+            if(combinedLink == validationLink){
+                return true
+            }
+            else{
+                return false
+            }
+
+                {/* {LinksData.filter(f=> f.id == LinkID)[0]?.typeInfo.Validation} */}
+                {/* {LinksData.filter(f=> f.id == LinkID)[0]?.address && new URL(LinksData.filter(f=> f.id == LinkID)[0]?.address) && console.log(new URL(LinksData.filter(f=> f.id == LinkID)[0]?.address)?.origin?.split(".")[new URL(LinksData.filter(f=> f.id == LinkID)[0]?.address).origin.split(".").length-2])} */}
+
+
+
+
+
+
+
+
+
+
+
+            return myLink;
+        } catch (error) {
+            return false
+            
+        }
+    }
 
 
 
@@ -145,20 +180,24 @@ const [LinkDetails, setLinkDetails] = useState(
 
             <p className='pt-3'> Platform </p>
 
-            <div className='relative' >
-                <p className='bg-white border border-stone-400 w-full px-3 py-2 rounded'  onClick={(e)=> {e.target.nextElementSibling.classList.remove("hidden");  }}> Choose Platform </p>
+            <div className='relative'>
+                <p className='bg-white border border-stone-400 w-full px-3 py-2 rounded'  onClick={(e)=> {e.target.nextElementSibling.classList.remove("hidden");  }}> {LinksData.filter(f=> f.id == LinkID)[0]?.name ? LinksData.filter(f=> f.id == LinkID)[0]?.name : "Choose Platform" }  </p>
                 <div className='absolute z-20 hidden w-full bg-white mt-1 border border-stone-500'>
                     {LinkInfo.map(info=> 
-                        <p className='cursor-pointer py-2 hover:bg-slate-600 hover:text-white border-t px-3' onClick={(e)=> { e.target.parentElement.previousSibling.innerHTML=  `<i className="fab ${info.icon} mr-1"></i>  ${info.type}`; setLinkDetails({...LinkDetails, type: info.type, typeInfo:info}); LinkHandler(LinkDetails);  e.target.parentElement.classList.add("hidden")   } } > <i className={`fab ${info.icon} mr-1`}></i>  {info.type} </p>    
+                        <p className='cursor-pointer py-2 hover:bg-slate-600 hover:text-white border-t px-3' onClick={(e)=> { e.target.parentElement.previousSibling.innerHTML=  `<i className="fab ${info.icon} mr-1"> </i>  ${info.type}`; setLinkDetails({...LinkDetails, type: info.type, typeInfo:info}); LinkHandler(LinkID, "type", info.type, info);  e.target.parentElement.classList.add("hidden")   } } > <i className={`fab ${info.icon} mr-1`}></i>  {info.type} </p>    
                     )}
                 </div>
             </div>
 
             <p className='mt-3'> Link </p>
             <div className='relative'>
-                <input type='text' name='address' className='border border-stone-400 w-full px-3 py-2 rounded pl-8' onChange={test=> {setLinkDetails({...LinkDetails, address: test.target.value}); console.log(LinkDetails); console.log(LinkID); LinkHandler(LinkID, test.target.name, test.target.value);   } } />
+                <input type='text' defaultValue={LinksData.filter(f=> f.id == LinkID)[0]?.address ? LinksData.filter(f=> f.id == LinkID)[0]?.address : ""} name='address' className='border border-stone-400 w-full px-3 py-2 rounded pl-8' onChange={test=> {setLinkDetails({...LinkDetails, address: test.target.value}); console.log(LinkDetails); console.log(LinkID); LinkHandler(LinkID, test.target.name, test.target.value);   } } />
                 <i className="fas fa-link absolute left-3 top-3"></i>
-            </div>
+                
+                {LinksData.filter(f=> f.id == LinkID)[0]?.typeInfo && LinksData.filter(f=> f.id == LinkID)[0]?.address?.length > 5 && !GetAdressValidation(LinkID) &&
+                 <div className='bg-red-600 px-2 text-center rounded mt-1 py-2 text-white w-40 text-xs'> Link of <span className='font-bold uppercase'>'{LinksData.filter(f=> f.id == LinkID)[0]?.typeInfo?.type}'</span>  is not appropiete. </div>
+                }
+             </div>
         </div>
   )
 }

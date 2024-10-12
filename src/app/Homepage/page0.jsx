@@ -1,11 +1,12 @@
 'use client'
 
-import LinkContainer from '@/Component/LinkContainer/LinkContainer'
-import Link from 'next/link'
+import LinkContainer from '@/Component/LinkContainer/LinkContainer0'
+import ProfileEdit from '@/Component/ProfileEdit/ProfileEdit'
 import React, { useEffect, useState } from 'react'
 
 
-function Page() {
+
+function page() {
 
 
 
@@ -71,6 +72,43 @@ function Page() {
             
 
 
+            const LinkHandler =(info)=>{
+
+                // console.log("Data of Change Data")
+                // console.log(info)
+
+
+                if(LinksData.length > 0){
+                    const StoredLinksID = LinksData.map(m=> m.id)
+
+                    console.log("StoredLinksID")
+                    console.log(StoredLinksID)
+
+                    if(StoredLinksID.includes(info.id)){
+                        let restData = LinksData.filter(f=> f.id != info.id)
+                        
+                        setLinksData([...restData, info])
+
+                        console.log("I am here in 2nd if")
+                    }
+                    else{
+                        setLinksData([...LinksData, info])
+
+                        console.log("I am here in 2nd else")
+
+                    }
+                }
+                else{
+                    setLinksData([...LinksData, info])
+                    console.log("I am here in 1st else")
+                }
+
+                
+
+
+                console.log(LinksData)
+
+            }
 
 
 
@@ -139,12 +177,10 @@ function Page() {
                         )} */}
 
                         {LinksData.length > 0 && LinksData.map(x=>
-                            <Link href={x.address ? x.address : ""} target="_blank" className='w-full'> 
-                                <div key={x.id} className={`flex text-white text-xs font-extralight mt-3 h-10 justify-between items-center ${x.typeInfo?.color} px-4 rounded-md w-full hover:scale-105 duration-300 cursor-pointer hover:shadow-md`}>
-                                    <div>   <i className={`fab ${x.typeInfo?.icon} mr-1`}></i>  <span> {x.typeInfo?.type} </span>   </div>
-                                    <i className="fas fa-arrow-right"></i>
-                                </div>
-                            </Link>
+                            <div key={x.id} className={`flex text-white text-xs font-extralight mt-3 h-10 justify-between items-center ${x.typeInfo?.color} px-4 rounded-md w-full hover:scale-105 duration-300 cursor-pointer hover:shadow-md`}>
+                                <div>   <i className={`fab ${x.typeInfo?.icon} mr-1`}></i>  <span> {x.type} </span>   </div>
+                                <i className="fas fa-arrow-right"></i>
+                            </div>
                         )}
 
 
@@ -203,8 +239,8 @@ function Page() {
                     {/* Profile Edit */}
                     {/* Profile Edit */}
                     <div className='grid md:flex w-full md:h-44 bg-gray-100 text-black text-sm px-3 py-4 rounded-md mt-4 self-center justify-around'>
-                        <div className='p-1 h-8 w-full grid items-center md:w-3/12 lg:w-4/12'> Profile Picture </div>
-                        <div className='p-1 h-44 md:h-auto w-full md:w-5/12 lg:w-3/12 relative rounded-md overflow-hidden'> 
+                        <div className='p-1 h-8 w-full grid items-center md:w-4/12'> Profile Picture </div>
+                        <div className='p-1 h-44 md:h-auto w-full md:w-3/12 relative rounded-md overflow-hidden'> 
                             <label htmlFor="profile-input">
                                 <img src={userInfo.Image.url ? userInfo.Image.url : '/avatar.png'} alt="" className='h-full w-full absolute top-0 left-0 z-20 object-contain'/> 
                                 <div className='grid items-center text-center align-middle bg-black text-white opacity-60 h-full w-full cursor-pointer z-30 absolute top-0 left-0'>
@@ -217,39 +253,23 @@ function Page() {
                             </label>
                             <input type="file" id='profile-input' className='h-full w-full cursor-pointer bg-transparent hidden' onChange={myImage => setuserInfo({...userInfo, Image: {file: myImage.target.files[0], url: URL.createObjectURL(myImage.target.files[0])}})} />
                         </div>
-                        <div className='p-1 h-10 w-full text-xs grid justify-center items-center md:w-3/12 lg:w-4/12'> Image must be bellow 1024×1024px. Use PNG, JPG or BMP format.  </div>
+                        <div className='p-1 h-10 w-full text-xs grid justify-center items-center md:w-4/12'> Image must be bellow 1024×1024px. Use PNG, JPG or BMP format.  </div>
                     </div>
 
 
                     
 
 
+
                     {/* Profile Name */}
                     {/* Profile Name */}
-                    <form className='flex flex-col w-full bg-gray-100 text-black text-sm px-3 py-6 rounded-md mt-4 self-center'>
-                        <div className='flex flex-col md:flex-row w-full  mt-4 justify-between'>
-                            <p className='w-36'> First name<sup>*</sup> </p>
-                            <input name='FirstName' type='text' className='border outline-purple-600 border-gray-300 w-full px-3 py-2 rounded pl-8' onChange={data=> setuserInfo({...userInfo,[data.target.name]:data.target.value}) } required/>
-                        </div>
-
-                        <div className='flex flex-col md:flex-row w-full  mt-4 justify-between'>
-                            <p className='w-36'> Last name<sup>*</sup> </p>
-                            <input name='LastName' type='text' className='border outline-purple-600 border-gray-300 w-full px-3 py-2 rounded pl-8' onChange={data=> setuserInfo({...userInfo,[data.target.name]:data.target.value}) } required/>
-                        </div>
-
-                        <div className='flex flex-col md:flex-row w-full  mt-4 justify-between'>
-                            <p className='w-36'> Email </p>
-                            <input name='Email' type='email' className='borderoutline-purple-600 border-gray-300  w-full px-3 py-2 rounded pl-8' onChange={data=> setuserInfo({...userInfo,[data.target.name]:data.target.value}) } />
-                        </div>
-
-                        <submit className='w-full md:w-24 px-5 py-2 hover:scale-105 duration-300 cursor-pointer hover:bg-purple-300 hover:text-black hover:border-black hover:shadow-md bg-purple-700 text-white mt-5 self-end rounded-md text-center'>  Save </submit>
-                    </form>
+                    <ProfileEdit setuserInfo={setuserInfo} userInfo={userInfo} />
 
 
 
 
                     
-                    
+                    <div className='w-full md:w-24 px-5 py-2 hover:scale-105 duration-300 cursor-pointer hover:bg-white hover:text-black hover:border-black bg-purple-700 text-white mt-3 self-end rounded-md text-center'>  Save </div>
                     
                 </div>
 
@@ -349,7 +369,7 @@ export default function MyComponent() {
                             {/* Link Container */}
                             
 
-                            {LinksID.length > 0 && LinksID.map(e=> <LinkContainer key={e.id} LinkID={e.id}  LinksData={LinksData}  setLinksData={setLinksData}  /> )}
+                            {LinksID.length > 0 && LinksID.map(e=> <LinkContainer key={e.id} LinkID={e.id}  LinkFunction={LinkHandler}  /> )}
 
 
                             {/* <div className='w-full bg-gray-100 text-black text-sm px-3 py-4 rounded-md mt-4 self-center'>
@@ -437,12 +457,10 @@ export default function MyComponent() {
 
 
                 {LinksData.length > 0 && LinksData.map(x=>
-                    <Link href={x.address ? x.address : ""} target="_blank" className='w-full'> 
-                        <div key={x.id} className={`flex text-white text-xs font-extralight mt-3 h-10 justify-between items-center ${x.typeInfo?.color} px-4 rounded-md w-full hover:scale-105 duration-300 cursor-pointer hover:shadow-md`}>
-                            <div>   <i className={`fab ${x.typeInfo?.icon} mr-1`}></i>  <span> {x.typeInfo?.type} </span>   </div>
-                            <i className="fas fa-arrow-right"></i>
-                        </div>
-                    </Link>
+                    <div key={x.id} className={`flex text-white text-xs font-extralight mt-3 h-10 justify-between items-center ${x.typeInfo?.color} px-4 rounded-md w-full hover:scale-105 duration-300 cursor-pointer hover:shadow-md`}>
+                        <div>   <i className={`fab ${x.typeInfo?.icon} mr-1`}></i>  <span> {x.type} </span>   </div>
+                        <i className="fas fa-arrow-right"></i>
+                    </div>
                 )}
 
 
@@ -493,4 +511,4 @@ export default function MyComponent() {
   )
 }
 
-export default Page
+export default page
