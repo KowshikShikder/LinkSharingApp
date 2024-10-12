@@ -164,8 +164,8 @@ function Page() {
 
 
                         {LinksData.length > 0 && LinksData.map(x=>
-                            <Link href={x.address ? x.address : ""} target="_blank" className='w-full'> 
-                                <div key={x.id} className={`flex text-white text-xs font-extralight mt-3 h-10 justify-between items-center ${x.typeInfo?.color} px-4 rounded-md w-full hover:scale-105 duration-300 cursor-pointer hover:shadow-md`}>
+                            <Link key={x.id} href={x.address ? x.address : ""} target="_blank" className='w-full'> 
+                                <div className={`flex text-white text-xs font-extralight mt-3 h-10 justify-between items-center ${x.typeInfo?.color} px-4 rounded-md w-full hover:scale-105 duration-300 cursor-pointer hover:shadow-md`}>
                                     <div>   <i className={`fab ${x.typeInfo?.icon} mr-1`}></i>  <span> {x.typeInfo?.type} </span>   </div>
                                     <i className="fas fa-arrow-right"></i>
                                 </div>
@@ -278,22 +278,7 @@ function Page() {
                 
                         <div className='w-full mt-6 text-center justify-self-center text-sm border border-purple-700 text-purple-500 cursor-pointer  hover:border-white  hover:bg-purple-700 hover:text-white rounded p-1 hover:scale-105 duration-300' onClick={()=>{ setLinksID([...LinksID, {id:`${Date.now()}`}])}} >  + Add new link  </div>
 
-                    {/* <DndContext onDragEnd={handleDragEnd} collisionDetection={closestCorners}>
-                            <div id='LinkEditContainer'>
 
-                        <SortableContext items={LinksID} strategy={verticalListSortingStrategy}>
-
-                                {LinksID.length > 0 && LinksID.map(e=> 
-                                
-                                    <LinkContainer key={e.id} LinkID={e.id}  LinksData={LinksData}  setLinksData={setLinksData} setLinksID={setLinksID}  LinksID={LinksID}  /> 
-                                    
-                                )}
-
-                        </SortableContext>
-
-                            </div>
-
-                    </DndContext> */}
 
 
 
@@ -307,9 +292,6 @@ function Page() {
             <div className="column text-black">
             <SortableContext items={LinksID} strategy={verticalListSortingStrategy}>
 
-                {/* {LinksID.length > 0 && LinksID.map((task) => (
-                    <Task key={task.id} id={task.id}  />
-                ))} */}
 
                 {LinksID.length > 0 && LinksID.map((e, index)=> 
                     
@@ -378,8 +360,8 @@ function Page() {
 
 
                 {LinksData.length > 0 && LinksData.map(x=>
-                    <Link href={x.address ? x.address : ""} target="_blank" className='w-full'> 
-                        <div key={x.id} className={`flex text-white text-xs font-extralight mt-3 h-10 justify-between items-center ${x.typeInfo?.color} px-4 rounded-md w-full hover:scale-105 duration-300 cursor-pointer hover:shadow-md`}>
+                    <Link key={x.id} href={x.address ? x.address : ""} target="_blank" className='w-full'> 
+                        <div className={`flex text-white text-xs font-extralight mt-3 h-10 justify-between items-center ${x.typeInfo?.color} px-4 rounded-md w-full hover:scale-105 duration-300 cursor-pointer hover:shadow-md`}>
                             <div>   <i className={`fab ${x.typeInfo?.icon} mr-1`}></i>  <span> {x.typeInfo?.type} </span>   </div>
                             <i className="fas fa-arrow-right"></i>
                         </div>

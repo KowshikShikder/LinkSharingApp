@@ -190,8 +190,8 @@ transform: CSS.Transform.toString(transform),
             <div className='relative'>
                 <p className='bg-white border border-stone-400 w-full px-3 py-2 rounded'  onClick={(e)=> {e.target.nextElementSibling.classList.remove("hidden");  }}> {LinksData.filter(f=> f.id == LinkID)[0]?.name ? LinksData.filter(f=> f.id == LinkID)[0]?.name : "Choose Platform" }  </p>
                 <div className='absolute z-20 hidden w-full bg-white mt-1 border border-stone-500'>
-                    {LinkInfo.map(info=> 
-                        <p className='cursor-pointer py-2 hover:bg-slate-600 hover:text-white border-t px-3' onClick={(e)=> { e.target.parentElement.previousSibling.innerHTML=  `<i className="fab ${info.icon} mr-1"> </i>  ${info.type}`; setLinkDetails({...LinkDetails, type: info.type, typeInfo:info}); LinkHandler(LinkID, "type", info.type, info);  e.target.parentElement.classList.add("hidden")   } } > <i className={`fab ${info.icon} mr-1`}></i>  {info.type} </p>    
+                    {LinkInfo.map((info, index)=> 
+                        <p key={index} className='cursor-pointer py-2 hover:bg-slate-600 hover:text-white border-t px-3' onClick={(e)=> { e.target.parentElement.previousSibling.innerHTML=  `<i className="fab ${info.icon} mr-1"> </i>  ${info.type}`; setLinkDetails({...LinkDetails, type: info.type, typeInfo:info}); LinkHandler(LinkID, "type", info.type, info);  e.target.parentElement.classList.add("hidden")   } } > <i className={`fab ${info.icon} mr-1`}></i>  {info.type} </p>    
                     )}
                 </div>
             </div>
