@@ -23,6 +23,7 @@ export default function RootLayout({ children }) {
       <head>
       {/* <!-- FOR FONT AWASOME --> */}
       <script src="https://kit.fontawesome.com/e3eef4a801.js" crossorigin="anonymous"></script>
+      <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-storage.js"></script>
 
       </head>
       <body

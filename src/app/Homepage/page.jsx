@@ -1,8 +1,12 @@
 'use client'
 
 import LinkContainer from '@/Component/LinkContainer/LinkContainer'
+import { auth, db } from '@/Lib/firebase'
+import upload from '@/Lib/upload'
 import { closestCorners, DndContext, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core'
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable'
+import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { collection, doc, getDoc, query, setDoc, where } from 'firebase/firestore'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 
@@ -107,6 +111,126 @@ function Page() {
 
             };
 
+
+
+
+
+
+
+
+
+            const [FormData, setFormData] = useState({
+                username:"",
+                email:"",
+                password:"",
+                rePassword:""
+              })
+            
+              const [loading, setLoading] = useState(false);
+            
+            
+              const onChangeHandler =(e)=>{
+            
+                setFormData({...FormData,[e.target.name]:e.target.value})
+                console.log(FormData)
+            
+              }
+
+
+
+
+
+              const handleLogin = async (e) => {
+                e.preventDefault();
+                setLoading(true);
+            
+            
+                try {
+                  await signInWithEmailAndPassword(auth, FormData.email, FormData.password);
+            
+                } catch (err) {
+                  console.log(err);
+                } finally {
+                  setLoading(false);
+                }
+              };
+
+
+
+
+
+
+
+
+
+
+
+
+              const [Avatar, setAvatar] = useState({
+                file: null,
+                url: "",
+              });
+
+              const handleAvatar = (e) => {
+                if (e.target.files[0]) {
+                  setAvatar({
+                    file: e.target.files[0],
+                    url: URL.createObjectURL(e.target.files[0]),
+                  });
+                }
+              };
+
+
+
+
+
+
+
+              const handleRegister = async (e) => {
+                e.preventDefault();
+                // setLoading(true);
+            
+            
+            
+            
+                // VALIDATE INPUTS
+                if (!FormData.username || !FormData.email || !FormData.password)
+                  return alert("Please enter inputs!");
+            
+            
+                // VALIDATE UNIQUE USERNAME
+                // const usersRef = collection(db, "users");
+                // const q = query(usersRef, where("username", "==", FormData.username));
+                // const querySnapshot = await getDoc(q);
+                // if (!querySnapshot.empty) {
+                //   return alert("Select another username");
+                // }
+            
+                try {
+                  const res = await createUserWithEmailAndPassword(auth, FormData.email, FormData.password);
+            
+                  const imgUrl = await upload(Avatar.file);
+            
+                  await setDoc(doc(db, "users", res.user.uid), {
+                    username:FormData.username,
+                    email:FormData.email,
+                    avatar: imgUrl,
+                    id: res.user.uid,
+                    blocked: [],
+                  });
+            
+                //   await setDoc(doc(db, "userchats", res.user.uid), {
+                //     chats: [],
+                //   });
+            
+                  
+                } catch (err) {
+                  console.log(err);
+
+                } finally {
+                  setLoading(false);
+                }
+              };
 
 
 
@@ -376,6 +500,98 @@ function Page() {
 
 
     }
+
+
+
+    {/* <div className='grid relative p-10 bg-slate-800 w-96 opacity-90 self-center text-slate-100'>
+            <form action="">
+                <h2 className='text-center text-xl font-extrabold tracking-wider'> Login </h2>
+
+                <div className='grid gap-4 mt-8'>
+                    <label htmlFor="email" className=''> Email: </label>
+                    <input type="email" className='p-2 rounded-md outline-none text-black font-bolder opacity-100' placeholder='abdullah@gmail.com' name='email' onChange={onChangeHandler}/>
+                </div>
+
+                <div className='grid gap-4 mt-8'>
+                    <label htmlFor="email" className=''> Password: </label>
+                    <input type="password" className='p-2 rounded-md outline-none text-black font-bolder opacity-100' placeholder='Type here password' name='password' onChange={onChangeHandler}/>
+                </div>
+
+
+                {loading ?
+                <div className="absolute top-0 left-0 grid justify-center text-center items-center m-auto h-full w-full bg-slate-500 bg-opacity-70">
+                    <h2 className="text-2xl bolder"> Loading... </h2>
+                </div>
+                :"" }
+
+
+                <button className='m-auto block py-2 px-6 mt-8 mb-4 rounded bg-sky-600 hover:bg-sky-700' onClick={handleLogin}> Login </button>
+            </form>
+
+
+            <div>
+            {UserInfo?.currentUser?.id ? 
+            <button  className='m-auto block py-2 px-6 mt-8 mb-4 rounded bg-sky-600 hover:bg-sky-700' onClick={handleSignOut}> Logout </button> : <button  className='m-auto block py-2 px-6 mt-8 mb-4 rounded bg-sky-600 hover:bg-sky-700' onClick={()=> router.push('/SignUp')}> Create Account </button>
+            }
+            </div>
+            
+
+        
+        {UserInfo && console.log(UserInfo)}
+
+
+        </div> */}
+
+
+
+
+
+
+
+
+        <div className='grid p-10 relative bg-slate-800 opacity-90 w-auto self-center text-slate-100'>
+            <form onSubmit={handleRegister}>
+                <h2 className='text-center text-xl font-extrabold tracking-wider'> Sign Up </h2>
+
+                <div className='grid grid-flow-col mt-8'>
+                    <label className="block w-36" htmlFor="email"> User Name: </label>
+                    <input name="username" type="name" className='p-2 rounded-md outline-none text-black font-bolder' placeholder='Abdullah' onChange={onChangeHandler} required/>
+                </div>
+
+                <div className='grid grid-flow-col mt-8'>
+                    <label className="block w-36" htmlFor="email"> Email: </label>
+                    <input name="email" type="email" className='p-2 rounded-md outline-none text-black font-bolder' placeholder='abdullah@gmail.com' onChange={onChangeHandler} required/>
+                </div>
+
+                <div className='grid grid-flow-col mt-8'>
+                    <label className="block w-36" htmlFor="password"> Password: </label>
+                    <input name="password" type="password" className='p-2 rounded-md outline-none text-black font-bolder' placeholder='Type here a password' onChange={onChangeHandler} required/>
+                </div>
+
+                <div className='grid grid-flow-col mt-4'>
+                    <label className="block w-36" htmlFor="password"> Retype Password: </label>
+                    <input name="rePassword" type="password" className={`p-2 rounded-md outline-none text-black font-bolder ${FormData.rePassword.length > 0 && FormData.password != FormData.rePassword ? "border-2 border-red-700" : "" } `} placeholder='Re-type here the password' onChange={onChangeHandler} required/>
+                </div>
+
+
+                <div className='grid gap-3 mt-4'>
+                    <label className="" htmlFor="image"> Choose an Image: </label>
+                    <img src={`${Avatar.url ? Avatar.url : '/avatar.png'}`} alt="Avatar"  className='h-28 w-h-28' />
+                    <input name="image" type="file" className='p-1 rounded-md outline-none text-black font-bolder bg-white' placeholder='Set a profile Picture' onChange={handleAvatar} required/>
+                </div>
+                
+                {loading ? 
+                <div className="absolute top-0 left-0 grid justify-center text-center items-center m-auto h-full w-full bg-slate-500 bg-opacity-70">
+                    <h2 className="text-2xl bolder"> Loading... </h2>
+                </div>
+                :"" }
+
+                <button type="submit" className='m-auto block py-2 px-6 mt-8 mb-4 rounded bg-sky-600 hover:bg-sky-700'> Sign Up </button>
+
+                <h3> Already have an account? </h3>
+                <button  onClick={()=> console.log("Goto Login Page")} className='m-auto block py-2 px-6 mt-8 mb-4 rounded text-red-700'> Login </button>
+            </form>
+        </div>
     </>
   )
 }
