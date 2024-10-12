@@ -1,11 +1,21 @@
 'use client'
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import React, { useState } from 'react'
 
 
 
 function LinkContainer(props) {
 
-    const {LinkID, LinksData, setLinksData} = props;
+    const {LinkID, LinksData, setLinksData, setLinksID, LinksID, id, index} = props;
+
+
+
+
+
+
+
+
 
 
 
@@ -45,9 +55,6 @@ function LinkContainer(props) {
 
 
     const LinkHandler =(uid, Names, info, typeInfo)=>{
-
-        // console.log("Data of Change Data")
-        // console.log(info)
 
 
         if(LinksData.length > 0){
@@ -105,29 +112,23 @@ function LinkContainer(props) {
             var combinedLink = `${GivenLinkPart1}.${GivenLinkPart2}`
 
             const validationLink = LinksData.filter(f=> f.id == LinkID)[0]?.typeInfo?.Validation;
+            console.log('validationLink')
+            console.log(validationLink)
+            console.log('combinedLink')
+            console.log(combinedLink)
+
 
             if(combinedLink == validationLink){
+
                 return true
             }
             else{
                 return false
             }
 
-                {/* {LinksData.filter(f=> f.id == LinkID)[0]?.typeInfo.Validation} */}
-                {/* {LinksData.filter(f=> f.id == LinkID)[0]?.address && new URL(LinksData.filter(f=> f.id == LinkID)[0]?.address) && console.log(new URL(LinksData.filter(f=> f.id == LinkID)[0]?.address)?.origin?.split(".")[new URL(LinksData.filter(f=> f.id == LinkID)[0]?.address).origin.split(".").length-2])} */}
 
-
-
-
-
-
-
-
-
-
-
-            return myLink;
         } catch (error) {
+            console.log(error)
             return false
             
         }
@@ -161,8 +162,13 @@ const [LinkDetails, setLinkDetails] = useState(
 
 
 
+const { attributes, listeners, setNodeRef, transform, transition } =
+useSortable({ id });
 
-
+const style = {
+transition,
+transform: CSS.Transform.toString(transform),
+};
 
 
 
@@ -170,12 +176,13 @@ const [LinkDetails, setLinkDetails] = useState(
 
 
   return (
-        <div className='w-full bg-gray-100 text-black text-sm px-3 py-4 rounded-md mt-4 self-center' id="">
+        <div  style={style} className='w-full bg-gray-100 text-black text-sm px-3 py-4 rounded-md mt-4 self-center' id="">
             <div className='flex justify-between'> 
-                <div>
-                    <span>=</span><span> link #</span><span>1</span>
+                <div ref={setNodeRef} {...attributes} {...listeners} style={{touchAction:'none'}}>
+                    <span className='text-3xl'> = </span><span> link #</span><span>{index+1}</span>
                 </div>
-                <div className='cursor-pointer py-1 px-2 text-sm'>Remove</div>
+                
+                <div className='cursor-pointer py-1 px-2 text-sm' onClick={()=> {setLinksData([...LinksData.filter(f=> f.id != LinkID)]);   setLinksID([...LinksID.filter(d=> d.id !== LinkID)]); console.log(LinksID, LinkID)  }} >Remove</div>
             </div>
 
             <p className='pt-3'> Platform </p>
@@ -188,6 +195,36 @@ const [LinkDetails, setLinkDetails] = useState(
                     )}
                 </div>
             </div>
+
+
+
+
+
+            {/* animation: {
+                        shake:'shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97)'
+                              },
+                                    keyframes: {
+                                            shake : {
+                                                      '10%, 90%': {
+                                                                    transform: 'translate3d(-1px, 0, 0)'
+                                                                              },
+                                                                                        '20%, 80%': {
+                                                                                                      transform: 'translate3d(2px, 0, 0)'
+                                                                                                                },
+                                                                                                                          '30%, 50%, 70%': {
+                                                                                                                                        transform: 'translate3d(-4px, 0, 0)'
+                                                                                                                                                  },
+                                                                                                                                                            '40%, 60%': {
+                                                                                                                                                                          transform: 'translate3d(4px, 0, 0)'
+                                                                                                                                                                                    }
+            } */}
+
+
+
+
+
+
+
 
             <p className='mt-3'> Link </p>
             <div className='relative'>

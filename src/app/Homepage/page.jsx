@@ -1,17 +1,17 @@
 'use client'
 
 import LinkContainer from '@/Component/LinkContainer/LinkContainer'
+import { closestCorners, DndContext, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core'
+import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
-
 
 function Page() {
 
 
-
     const [ShowProfile, setShowProfile] = useState(true)
     const [ShowPreview, setShowPreview] = useState(false)
-    const [userInfo, setuserInfo] = useState(
+    const [UserInfo, setUserInfo] = useState(
                                                     {
                                                         FirstName:"",
                                                         LastName:"",
@@ -31,6 +31,15 @@ function Page() {
                                                     )
 
     
+
+                                                      const sensors = useSensors(
+                                                        useSensor(PointerSensor),
+                                                        useSensor(KeyboardSensor, {
+                                                          coordinateGetter: sortableKeyboardCoordinates,
+                                                        })
+                                                      );
+
+
 
             const [LinkInfo, setLinkInfo] = useState([
                                                         {
@@ -70,8 +79,33 @@ function Page() {
             
             
 
+            const getTaskPos = (id) => LinksID.findIndex((task) => task.id === id);
+            const getTaskPos2 = (id) => LinksData.findIndex((task) => task.id === id);
 
 
+            const handleDragEnd = (event) => {
+              const { active, over } = event;
+          
+              if (active.id === over.id) return;
+
+
+
+        
+              setLinksData((LinksData) => {
+                const originalPos2 = getTaskPos2(active.id);
+                const newPos2 = getTaskPos2(over.id);
+                return arrayMove(LinksData, originalPos2, newPos2);
+              });
+
+
+              setLinksID((LinksID) => {
+                const originalPos = getTaskPos(active.id);
+                const newPos = getTaskPos(over.id);
+          
+                return arrayMove(LinksID, originalPos, newPos);
+              });
+
+            };
 
 
 
@@ -124,19 +158,10 @@ function Page() {
                     {/* Mobile Holder Section */}
 
                     <div className='border text-black border-black rounded-3xl w-52 px-4 pt-8 flex flex-col items-center' style={{height:"420px"}}>  
-                        <img src={userInfo.Image.url ? userInfo.Image.url : '/avatar.png'} alt="" className='h-16 w-16 rounded-full border-purple-800 border-2' />
-                        <p className='text-sm font-bold mt-3'> {userInfo.FirstName} {userInfo.LastName} </p>
-                        <p className='text-xs mt-3 mb-4'> {userInfo.Email} </p>
+                        <img src={UserInfo.Image.url ? UserInfo.Image.url : '/avatar.png'} alt="" className='h-16 w-16 rounded-full border-purple-800 border-2' />
+                        <p className='text-sm font-bold mt-3'> {UserInfo.FirstName} {UserInfo.LastName} </p>
+                        <p className='text-xs mt-3 mb-4'> {UserInfo.Email} </p>
 
-                        {/* Github */}
-                        {/* Github */}
-
-                        {/* {LinkInfo.map(e=>
-                            <div className={`flex text-white text-xs font-extralight mt-3 h-10 justify-between items-center ${e.color} px-4 rounded-md w-full hover:scale-105 duration-300 cursor-pointer hover:shadow-md`}>
-                                <div>   <i className={`fab ${e.icon} mr-1`}></i>  <span> {e.type} </span>   </div>
-                                <i className="fas fa-arrow-right"></i>
-                            </div>
-                        )} */}
 
                         {LinksData.length > 0 && LinksData.map(x=>
                             <Link href={x.address ? x.address : ""} target="_blank" className='w-full'> 
@@ -149,31 +174,6 @@ function Page() {
 
 
 
-                        
-                        {/* Youtube */}
-                        {/* Youtube */}
-                        {/* <div className='flex text-white text-xs font-extralight mt-3 h-10 justify-between items-center bg-red-600 px-4 rounded-md w-full hover:scale-105 duration-300 cursor-pointer hover:shadow-md'>
-                            <div>   <i className="fab fa-youtube mr-1"></i>  <span> YouTube </span> </div>
-                            <i className="fas fa-arrow-right"></i>
-                        </div> */}
-
-
-
-                        {/* LinkedIn */}
-                        {/* LinkedIn */}
-                        {/* <div className='flex text-white text-xs font-extralight mt-3 h-10 justify-between items-center bg-blue-700 px-4 rounded-md w-full hover:scale-105 duration-300 cursor-pointer hover:shadow-md'>
-                            <div>   <i className="fab fa-linkedin mr-1"></i>  <span> Linkedin </span>   </div>
-                            <i className="fas fa-arrow-right"></i>
-                        </div> */}
-
-                        
-
-                        {/* Facebook */}
-                        {/* Facebook */}
-                        {/* <div className='flex text-white text-xs font-extralight mt-3 h-10 justify-between items-center bg-blue-600 px-4 rounded-md w-full hover:scale-105 duration-300 cursor-pointer hover:shadow-md'>
-                            <div>   <i className="fab fa-facebook mr-1"></i>  <span> Facebook </span>   </div>
-                            <i className="fas fa-arrow-right"></i>
-                        </div> */}
                     </div>
                 </div>
 
@@ -206,7 +206,7 @@ function Page() {
                         <div className='p-1 h-8 w-full grid items-center md:w-3/12 lg:w-4/12'> Profile Picture </div>
                         <div className='p-1 h-44 md:h-auto w-full md:w-5/12 lg:w-3/12 relative rounded-md overflow-hidden'> 
                             <label htmlFor="profile-input">
-                                <img src={userInfo.Image.url ? userInfo.Image.url : '/avatar.png'} alt="" className='h-full w-full absolute top-0 left-0 z-20 object-contain'/> 
+                                <img src={UserInfo.Image.url ? UserInfo.Image.url : '/avatar.png'} alt="" className='h-full w-full absolute top-0 left-0 z-20 object-contain'/> 
                                 <div className='grid items-center text-center align-middle bg-black text-white opacity-60 h-full w-full cursor-pointer z-30 absolute top-0 left-0'>
                                     <div className=''>
                                         <i className="far fa-image text-2xl"></i>
@@ -215,7 +215,7 @@ function Page() {
                                     
                                 </div>
                             </label>
-                            <input type="file" id='profile-input' className='h-full w-full cursor-pointer bg-transparent hidden' onChange={myImage => setuserInfo({...userInfo, Image: {file: myImage.target.files[0], url: URL.createObjectURL(myImage.target.files[0])}})} />
+                            <input type="file" id='profile-input' className='h-full w-full cursor-pointer bg-transparent hidden' onChange={myImage => setUserInfo({...UserInfo, Image: {file: myImage.target.files[0], url: URL.createObjectURL(myImage.target.files[0])}})} />
                         </div>
                         <div className='p-1 h-10 w-full text-xs grid justify-center items-center md:w-3/12 lg:w-4/12'> Image must be bellow 1024×1024px. Use PNG, JPG or BMP format.  </div>
                     </div>
@@ -229,17 +229,17 @@ function Page() {
                     <form className='flex flex-col w-full bg-gray-100 text-black text-sm px-3 py-6 rounded-md mt-4 self-center'>
                         <div className='flex flex-col md:flex-row w-full  mt-4 justify-between'>
                             <p className='w-36'> First name<sup>*</sup> </p>
-                            <input name='FirstName' type='text' className='border outline-purple-600 border-gray-300 w-full px-3 py-2 rounded pl-8' onChange={data=> setuserInfo({...userInfo,[data.target.name]:data.target.value}) } required/>
+                            <input name='FirstName' type='text' className='border outline-purple-600 border-gray-300 w-full px-3 py-2 rounded pl-8' onChange={data=> setUserInfo({...UserInfo,[data.target.name]:data.target.value}) } required/>
                         </div>
 
                         <div className='flex flex-col md:flex-row w-full  mt-4 justify-between'>
                             <p className='w-36'> Last name<sup>*</sup> </p>
-                            <input name='LastName' type='text' className='border outline-purple-600 border-gray-300 w-full px-3 py-2 rounded pl-8' onChange={data=> setuserInfo({...userInfo,[data.target.name]:data.target.value}) } required/>
+                            <input name='LastName' type='text' className='border outline-purple-600 border-gray-300 w-full px-3 py-2 rounded pl-8' onChange={data=> setUserInfo({...UserInfo,[data.target.name]:data.target.value}) } required/>
                         </div>
 
                         <div className='flex flex-col md:flex-row w-full  mt-4 justify-between'>
                             <p className='w-36'> Email </p>
-                            <input name='Email' type='email' className='borderoutline-purple-600 border-gray-300  w-full px-3 py-2 rounded pl-8' onChange={data=> setuserInfo({...userInfo,[data.target.name]:data.target.value}) } />
+                            <input name='Email' type='email' className='borderoutline-purple-600 border-gray-300  w-full px-3 py-2 rounded pl-8' onChange={data=> setUserInfo({...UserInfo,[data.target.name]:data.target.value}) } />
                         </div>
 
                         <submit className='w-full md:w-24 px-5 py-2 hover:scale-105 duration-300 cursor-pointer hover:bg-purple-300 hover:text-black hover:border-black hover:shadow-md bg-purple-700 text-white mt-5 self-end rounded-md text-center'>  Save </submit>
@@ -257,38 +257,6 @@ function Page() {
 
             }
 
-
-
-
-{/* 
-import { useState } from 'react';
-
-export default function MyComponent() {
-  const [items, setItems] = useState(['Item 1', 'Item 2', 'Item 3']);
-
-  const addItem = () => {
-    setItems([...items, `Item ${items.length + 1}`]); // Add an item
-  };
-
-  const deleteItem = (index) => {
-    const updatedItems = items.filter((_, i) => i !== index); // Delete an item
-    setItems(updatedItems);
-  };
-
-  return (
-    <div>
-      <ul>
-        {items.map((item, index) => (
-          <li key={index}>
-            {item}
-            <button onClick={() => deleteItem(index)}>Delete</button>
-          </li>
-        ))}
-      </ul>
-      <button onClick={addItem}>Add Item</button>
-    </div>
-  );
-} */}
 
 
 
@@ -310,76 +278,49 @@ export default function MyComponent() {
                 
                         <div className='w-full mt-6 text-center justify-self-center text-sm border border-purple-700 text-purple-500 cursor-pointer  hover:border-white  hover:bg-purple-700 hover:text-white rounded p-1 hover:scale-105 duration-300' onClick={()=>{ setLinksID([...LinksID, {id:`${Date.now()}`}])}} >  + Add new link  </div>
 
+                    {/* <DndContext onDragEnd={handleDragEnd} collisionDetection={closestCorners}>
+                            <div id='LinkEditContainer'>
 
-                        <div id='LinkEditContainer'>
+                        <SortableContext items={LinksID} strategy={verticalListSortingStrategy}>
 
-                            {/* Link Container */}
-                            {/* Link Container */}
-                            {/* <div className='w-full bg-gray-100 text-black text-sm px-3 py-4 rounded-md mt-4 self-center' id="">
-                                <div className='flex justify-between'> 
-                                    <div>
-                                        <span>=</span><span> link #</span><span>1</span>
-                                    </div>
-                                    <div className='cursor-pointer py-1 px-2 text-sm'>Remove</div>
-                                </div>
+                                {LinksID.length > 0 && LinksID.map(e=> 
+                                
+                                    <LinkContainer key={e.id} LinkID={e.id}  LinksData={LinksData}  setLinksData={setLinksData} setLinksID={setLinksID}  LinksID={LinksID}  /> 
+                                    
+                                )}
 
-                                <p className='pt-3'> Platform </p>
-                                <div className='relative' >
-                                    <p className='bg-white border border-stone-400 w-full px-3 py-2 rounded'  onClick={(e)=> {e.target.nextElementSibling.classList.remove("hidden") }}> Choose Platform </p>
-                                    <div className='absolute z-20 hidden w-full bg-white mt-1 border border-stone-500'>
-                                        {LinkInfo.map(info=> 
-                                            <p className='cursor-pointer py-2 hover:bg-slate-600 hover:text-white border-t px-3' onClick={(e)=> { e.target.parentElement.previousSibling.innerHTML=  `<i className="fab ${info.icon} mr-1"></i>  ${info.type}`;  e.target.parentElement.classList.add("hidden")   } } > <i className={`fab ${info.icon} mr-1`}></i>  {info.type} </p>    
-                                        )}
-                                    </div>
-                                </div>
+                        </SortableContext>
 
-                                <p className='mt-3'> Link </p>
-                                <div className='relative'>
-                                    <input type='text' className='border border-stone-400 w-full px-3 py-2 rounded pl-8' />
-                                    <i className="fas fa-link absolute left-3 top-3"></i>
-                                </div>
-                            </div> */}
+                            </div>
 
-
-                            
+                    </DndContext> */}
 
 
 
-                            {/* Link Container */}
-                            {/* Link Container */}
-                            
-
-                            {LinksID.length > 0 && LinksID.map(e=> <LinkContainer key={e.id} LinkID={e.id}  LinksData={LinksData}  setLinksData={setLinksData}  /> )}
 
 
-                            {/* <div className='w-full bg-gray-100 text-black text-sm px-3 py-4 rounded-md mt-4 self-center'>
-                                <div className='flex justify-between'> 
-                                    <div>
-                                        <span>=</span><span> link #</span><span>1</span>
-                                    </div>
-                                    <div className='cursor-pointer py-1 px-2 text-sm'>Remove</div>
-                                </div>
+        <DndContext
+            sensors={sensors}
+            collisionDetection={closestCorners}
+            onDragEnd={handleDragEnd}
+        >
+            <div className="column text-black">
+            <SortableContext items={LinksID} strategy={verticalListSortingStrategy}>
 
-                                <p className='pt-3'> Platform </p>
-                                <div className='relative' >
-                                    <p className='bg-white border border-stone-400 w-full px-3 py-2 rounded'  onClick={(e)=> {e.target.nextElementSibling.classList.remove("hidden") }}> <i className="fab fa-github mr-1"></i>  Github </p>
-                                    <div className='absolute z-20 hidden w-full bg-white mt-1 border border-stone-500'>
-                                        {LinkInfo.map(info=> 
-                                            <p className='cursor-pointer py-2 hover:bg-slate-600 hover:text-white border-t px-3' onClick={(e)=> { e.target.parentElement.previousSibling.innerHTML=  `<i className="fab ${info.icon} mr-1"></i>  ${info.type}`;  e.target.parentElement.classList.add("hidden")   } } > <i className="fab fa-github mr-1"></i>  {info.type} </p>    
-                                        )}
-                                    </div>
-                                </div>
+                {/* {LinksID.length > 0 && LinksID.map((task) => (
+                    <Task key={task.id} id={task.id}  />
+                ))} */}
 
-                                <p className='mt-3'> Link </p>
-                                <div className='relative'>
-                                    <input type='text' className='border border-stone-400 w-full px-3 py-2 rounded pl-8' />
-                                    <i className="fas fa-link absolute left-3 top-3"></i>
-                                </div>
-                            </div> */}
+                {LinksID.length > 0 && LinksID.map((e, index)=> 
+                    
+                    
+                    <LinkContainer index={index} key={e.id} id={e.id} LinkID={e.id}  LinksData={LinksData}  setLinksData={setLinksData} setLinksID={setLinksID}  LinksID={LinksID}  /> 
+                    
+                )}
 
-                        </div>
-
-
+            </SortableContext>
+            </div>
+      </DndContext>
 
 
                         
@@ -429,9 +370,9 @@ export default function MyComponent() {
             {/* Mobile Holder Section */}
 
             <div className='bg-white shadow-md border text-black border-black z-20 mt-20 rounded-3xl w-60 px-8 pt-8 flex flex-col items-center' style={{height:"420px"}}>  
-                <img src={userInfo.Image.url ? userInfo.Image.url : '/avatar.png'} alt="" className='h-16 w-16 rounded-full border-purple-800 border-2' />
-                <p className='text-sm font-bold mt-3'>  {userInfo.FirstName} {userInfo.LastName} </p>
-                <p className='text-xs mt-3 mb-4'> {userInfo.Email} </p>
+                <img src={UserInfo.Image.url ? UserInfo.Image.url : '/avatar.png'} alt="" className='h-16 w-16 rounded-full border-purple-800 border-2' />
+                <p className='text-sm font-bold mt-3'>  {UserInfo.FirstName} {UserInfo.LastName} </p>
+                <p className='text-xs mt-3 mb-4'> {UserInfo.Email} </p>
 
 
 
@@ -448,48 +389,12 @@ export default function MyComponent() {
 
 
 
-
-
-
-                {/* Github */}
-                {/* Github */}
-                {/* <div className='flex text-white text-xs font-extralight mt-3 h-10 justify-between items-center bg-black px-4 rounded-md w-full hover:scale-105 duration-300 cursor-pointer hover:shadow-md'>
-                    <div>   <i className="fab fa-github mr-1"></i>  <span> Github </span>   </div>
-                    <i className="fas fa-arrow-right"></i>
-                </div> */}
-
-                
-                {/* Youtube */}
-                {/* Youtube */}
-                {/* <div className='flex text-white text-xs font-extralight mt-3 h-10 justify-between items-center bg-red-600 px-4 rounded-md w-full hover:scale-105 duration-300 cursor-pointer hover:shadow-md'>
-                    <div>   <i className="fab fa-youtube mr-1"></i>  <span> YouTube </span> </div>
-                    <i className="fas fa-arrow-right"></i>
-                </div> */}
-
-
-
-                {/* LinkedIn */}
-                {/* LinkedIn */}
-                {/* <div className='flex text-white text-xs font-extralight mt-3 h-10 justify-between items-center bg-blue-700 px-4 rounded-md w-full hover:scale-105 duration-300 cursor-pointer hover:shadow-md'>
-                    <div>   <i className="fab fa-linkedin mr-1"></i>  <span> Linkedin </span>   </div>
-                    <i className="fas fa-arrow-right"></i>
-                </div> */}
-
-                
-
-                {/* Facebook */}
-                {/* Facebook */}
-                {/* <div className='flex text-white text-xs font-extralight mt-3 h-10 justify-between items-center bg-blue-600 px-4 rounded-md w-full hover:scale-105 duration-300 cursor-pointer hover:shadow-md'>
-                    <div>   <i className="fab fa-facebook mr-1"></i>  <span> Facebook </span>   </div>
-                    <i className="fas fa-arrow-right"></i>
-                </div> */}
             </div>
         </div>
 
 
     }
     </>
-
   )
 }
 
