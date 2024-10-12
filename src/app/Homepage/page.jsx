@@ -1,6 +1,7 @@
 'use client'
 
-import React, { useState } from 'react'
+import LinkContainer from '@/Component/LinkContainer/LinkContainer'
+import React, { useEffect, useState } from 'react'
 
 
 
@@ -28,33 +29,49 @@ function page() {
                                                         ]
                                                     }
                                                     )
-    const [LinkInfo, setLinkInfo] = useState([
-                                                {
-                                                    type:"Github",
-                                                    icon:"fa-github",
-                                                    Validation:"www.github.com",
-                                                    color:"bg-black"
-                                                },
-                                                {
-                                                    type:"YouTube",
-                                                    icon:"fa-youtube",
-                                                    Validation:"youtube.com",
-                                                    color:"bg-red-600"
-                                                },
-                                                {
-                                                    type:"Linkedin",
-                                                    icon:"fa-linkedin",
-                                                    Validation:"linkedin.com",
-                                                    color:"bg-blue-700"
-                                                },
-                                                {
-                                                    type:"Facebook",
-                                                    icon:"fa-facebook",
-                                                    Validation:"facebook.com",
-                                                    color:"bg-blue-600"
-                                                }
-                                            ])
+
     
+
+            const [LinkInfo, setLinkInfo] = useState([
+                                                        {
+                                                            type:"Github",
+                                                            icon:"fa-github",
+                                                            Validation:"www.github.com",
+                                                            color:"bg-black"
+                                                        },
+                                                        {
+                                                            type:"YouTube",
+                                                            icon:"fa-youtube",
+                                                            Validation:"youtube.com",
+                                                            color:"bg-red-600"
+                                                        },
+                                                        {
+                                                            type:"Linkedin",
+                                                            icon:"fa-linkedin",
+                                                            Validation:"linkedin.com",
+                                                            color:"bg-blue-700"
+                                                        },
+                                                        {
+                                                            type:"Facebook",
+                                                            icon:"fa-facebook",
+                                                            Validation:"facebook.com",
+                                                            color:"bg-blue-600"
+                                                        }
+                                                    ])
+
+
+
+            // var LinksID=[];
+
+            const [LinksData, setLinksData] = useState([])
+            const [LinksID, setLinksID] = useState([])
+
+
+            
+            
+
+
+
 
 
 
@@ -114,13 +131,19 @@ function page() {
                         {/* Github */}
                         {/* Github */}
 
-                        {LinkInfo.map(e=>
+                        {/* {LinkInfo.map(e=>
                             <div className={`flex text-white text-xs font-extralight mt-3 h-10 justify-between items-center ${e.color} px-4 rounded-md w-full hover:scale-105 duration-300 cursor-pointer hover:shadow-md`}>
-                                <div>   <i class={`fab ${e.icon} mr-1`}></i>  <span> {e.type} </span>   </div>
-                                <i class="fas fa-arrow-right"></i>
+                                <div>   <i className={`fab ${e.icon} mr-1`}></i>  <span> {e.type} </span>   </div>
+                                <i className="fas fa-arrow-right"></i>
+                            </div>
+                        )} */}
+
+                        {LinksData.length > 0 && LinksData.map(x=>
+                            <div key={x.id} className={`flex text-white text-xs font-extralight mt-3 h-10 justify-between items-center ${x.typeInfo?.color} px-4 rounded-md w-full hover:scale-105 duration-300 cursor-pointer hover:shadow-md`}>
+                                <div>   <i className={`fab ${x.typeInfo?.icon} mr-1`}></i>  <span> {x.type} </span>   </div>
+                                <i className="fas fa-arrow-right"></i>
                             </div>
                         )}
-
 
 
 
@@ -128,8 +151,8 @@ function page() {
                         {/* Youtube */}
                         {/* Youtube */}
                         {/* <div className='flex text-white text-xs font-extralight mt-3 h-10 justify-between items-center bg-red-600 px-4 rounded-md w-full hover:scale-105 duration-300 cursor-pointer hover:shadow-md'>
-                            <div>   <i class="fab fa-youtube mr-1"></i>  <span> YouTube </span> </div>
-                            <i class="fas fa-arrow-right"></i>
+                            <div>   <i className="fab fa-youtube mr-1"></i>  <span> YouTube </span> </div>
+                            <i className="fas fa-arrow-right"></i>
                         </div> */}
 
 
@@ -137,8 +160,8 @@ function page() {
                         {/* LinkedIn */}
                         {/* LinkedIn */}
                         {/* <div className='flex text-white text-xs font-extralight mt-3 h-10 justify-between items-center bg-blue-700 px-4 rounded-md w-full hover:scale-105 duration-300 cursor-pointer hover:shadow-md'>
-                            <div>   <i class="fab fa-linkedin mr-1"></i>  <span> Linkedin </span>   </div>
-                            <i class="fas fa-arrow-right"></i>
+                            <div>   <i className="fab fa-linkedin mr-1"></i>  <span> Linkedin </span>   </div>
+                            <i className="fas fa-arrow-right"></i>
                         </div> */}
 
                         
@@ -146,8 +169,8 @@ function page() {
                         {/* Facebook */}
                         {/* Facebook */}
                         {/* <div className='flex text-white text-xs font-extralight mt-3 h-10 justify-between items-center bg-blue-600 px-4 rounded-md w-full hover:scale-105 duration-300 cursor-pointer hover:shadow-md'>
-                            <div>   <i class="fab fa-facebook mr-1"></i>  <span> Facebook </span>   </div>
-                            <i class="fas fa-arrow-right"></i>
+                            <div>   <i className="fab fa-facebook mr-1"></i>  <span> Facebook </span>   </div>
+                            <i className="fas fa-arrow-right"></i>
                         </div> */}
                     </div>
                 </div>
@@ -184,7 +207,7 @@ function page() {
                                 <img src={userInfo.Image.url ? userInfo.Image.url : '/avatar.png'} alt="" className='h-full w-full absolute top-0 left-0 z-20 object-contain'/> 
                                 <div className='grid items-center text-center align-middle bg-black text-white opacity-60 h-full w-full cursor-pointer z-30 absolute top-0 left-0'>
                                     <div className=''>
-                                        <i class="far fa-image text-2xl"></i>
+                                        <i className="far fa-image text-2xl"></i>
                                         <p> Change Image </p>
                                     </div>
                                     
@@ -282,14 +305,14 @@ export default function MyComponent() {
                         <p className='text-lg font-bold text-black'> Customize your links </p>
                         <p className='text-xs mt-1 text-stone-600'> Add/ Edit/ Remove links bellow and then share all your profiles with the world! </p>
                 
-                        <div className='w-full mt-6 text-center justify-self-center text-sm border border-purple-700 text-purple-500 cursor-pointer  hover:border-white  hover:bg-purple-700 hover:text-white rounded p-1 hover:scale-105 duration-300'>  + Add new link  </div>
+                        <div className='w-full mt-6 text-center justify-self-center text-sm border border-purple-700 text-purple-500 cursor-pointer  hover:border-white  hover:bg-purple-700 hover:text-white rounded p-1 hover:scale-105 duration-300' onClick={()=>{ setLinksID([...LinksID, {id:`${Date.now()}`}])}} >  + Add new link  </div>
 
 
                         <div id='LinkEditContainer'>
 
                             {/* Link Container */}
                             {/* Link Container */}
-                            <div className='w-full bg-gray-100 text-black text-sm px-3 py-4 rounded-md mt-4 self-center' id="">
+                            {/* <div className='w-full bg-gray-100 text-black text-sm px-3 py-4 rounded-md mt-4 self-center' id="">
                                 <div className='flex justify-between'> 
                                     <div>
                                         <span>=</span><span> link #</span><span>1</span>
@@ -302,7 +325,7 @@ export default function MyComponent() {
                                     <p className='bg-white border border-stone-400 w-full px-3 py-2 rounded'  onClick={(e)=> {e.target.nextElementSibling.classList.remove("hidden") }}> Choose Platform </p>
                                     <div className='absolute z-20 hidden w-full bg-white mt-1 border border-stone-500'>
                                         {LinkInfo.map(info=> 
-                                            <p className='cursor-pointer py-2 hover:bg-slate-600 hover:text-white border-t px-3' onClick={(e)=> { e.target.parentElement.previousSibling.innerHTML=  `<i class="fab ${info.icon} mr-1"></i>  ${info.type}`;  e.target.parentElement.classList.add("hidden")   } } > <i class={`fab ${info.icon} mr-1`}></i>  {info.type} </p>    
+                                            <p className='cursor-pointer py-2 hover:bg-slate-600 hover:text-white border-t px-3' onClick={(e)=> { e.target.parentElement.previousSibling.innerHTML=  `<i className="fab ${info.icon} mr-1"></i>  ${info.type}`;  e.target.parentElement.classList.add("hidden")   } } > <i className={`fab ${info.icon} mr-1`}></i>  {info.type} </p>    
                                         )}
                                     </div>
                                 </div>
@@ -312,7 +335,7 @@ export default function MyComponent() {
                                     <input type='text' className='border border-stone-400 w-full px-3 py-2 rounded pl-8' />
                                     <i className="fas fa-link absolute left-3 top-3"></i>
                                 </div>
-                            </div>
+                            </div> */}
 
 
                             
@@ -321,7 +344,12 @@ export default function MyComponent() {
 
                             {/* Link Container */}
                             {/* Link Container */}
-                            <div className='w-full bg-gray-100 text-black text-sm px-3 py-4 rounded-md mt-4 self-center'>
+                            
+
+                            {LinksID.length > 0 && LinksID.map(e=> <LinkContainer key={e.id} LinkID={e.id}  LinksData={LinksData}  setLinksData={setLinksData}  /> )}
+
+
+                            {/* <div className='w-full bg-gray-100 text-black text-sm px-3 py-4 rounded-md mt-4 self-center'>
                                 <div className='flex justify-between'> 
                                     <div>
                                         <span>=</span><span> link #</span><span>1</span>
@@ -331,10 +359,10 @@ export default function MyComponent() {
 
                                 <p className='pt-3'> Platform </p>
                                 <div className='relative' >
-                                    <p className='bg-white border border-stone-400 w-full px-3 py-2 rounded'  onClick={(e)=> {e.target.nextElementSibling.classList.remove("hidden") }}> <i class="fab fa-github mr-1"></i>  Github </p>
+                                    <p className='bg-white border border-stone-400 w-full px-3 py-2 rounded'  onClick={(e)=> {e.target.nextElementSibling.classList.remove("hidden") }}> <i className="fab fa-github mr-1"></i>  Github </p>
                                     <div className='absolute z-20 hidden w-full bg-white mt-1 border border-stone-500'>
                                         {LinkInfo.map(info=> 
-                                            <p className='cursor-pointer py-2 hover:bg-slate-600 hover:text-white border-t px-3' onClick={(e)=> { e.target.parentElement.previousSibling.innerHTML=  `<i class="fab ${info.icon} mr-1"></i>  ${info.type}`;  e.target.parentElement.classList.add("hidden")   } } > <i class="fab fa-github mr-1"></i>  {info.type} </p>    
+                                            <p className='cursor-pointer py-2 hover:bg-slate-600 hover:text-white border-t px-3' onClick={(e)=> { e.target.parentElement.previousSibling.innerHTML=  `<i className="fab ${info.icon} mr-1"></i>  ${info.type}`;  e.target.parentElement.classList.add("hidden")   } } > <i className="fab fa-github mr-1"></i>  {info.type} </p>    
                                         )}
                                     </div>
                                 </div>
@@ -344,7 +372,7 @@ export default function MyComponent() {
                                     <input type='text' className='border border-stone-400 w-full px-3 py-2 rounded pl-8' />
                                     <i className="fas fa-link absolute left-3 top-3"></i>
                                 </div>
-                            </div>
+                            </div> */}
 
                         </div>
 
@@ -402,38 +430,54 @@ export default function MyComponent() {
                 <p className='text-sm font-bold mt-3'>  {userInfo.FirstName} {userInfo.LastName} </p>
                 <p className='text-xs mt-3 mb-4'> {userInfo.Email} </p>
 
+
+
+
+                {LinksData.length > 0 && LinksData.map(x=>
+                    <div key={x.id} className={`flex text-white text-xs font-extralight mt-3 h-10 justify-between items-center ${x.typeInfo?.color} px-4 rounded-md w-full hover:scale-105 duration-300 cursor-pointer hover:shadow-md`}>
+                        <div>   <i className={`fab ${x.typeInfo?.icon} mr-1`}></i>  <span> {x.type} </span>   </div>
+                        <i className="fas fa-arrow-right"></i>
+                    </div>
+                )}
+
+
+
+
+
+
+
                 {/* Github */}
                 {/* Github */}
-                <div className='flex text-white text-xs font-extralight mt-3 h-10 justify-between items-center bg-black px-4 rounded-md w-full hover:scale-105 duration-300 cursor-pointer hover:shadow-md'>
-                    <div>   <i class="fab fa-github mr-1"></i>  <span> Github </span>   </div>
-                    <i class="fas fa-arrow-right"></i>
-                </div>
+                {/* <div className='flex text-white text-xs font-extralight mt-3 h-10 justify-between items-center bg-black px-4 rounded-md w-full hover:scale-105 duration-300 cursor-pointer hover:shadow-md'>
+                    <div>   <i className="fab fa-github mr-1"></i>  <span> Github </span>   </div>
+                    <i className="fas fa-arrow-right"></i>
+                </div> */}
 
                 
                 {/* Youtube */}
                 {/* Youtube */}
-                <div className='flex text-white text-xs font-extralight mt-3 h-10 justify-between items-center bg-red-600 px-4 rounded-md w-full hover:scale-105 duration-300 cursor-pointer hover:shadow-md'>
-                    <div>   <i class="fab fa-youtube mr-1"></i>  <span> YouTube </span> </div>
-                    <i class="fas fa-arrow-right"></i>
-                </div>
+                {/* <div className='flex text-white text-xs font-extralight mt-3 h-10 justify-between items-center bg-red-600 px-4 rounded-md w-full hover:scale-105 duration-300 cursor-pointer hover:shadow-md'>
+                    <div>   <i className="fab fa-youtube mr-1"></i>  <span> YouTube </span> </div>
+                    <i className="fas fa-arrow-right"></i>
+                </div> */}
 
 
 
                 {/* LinkedIn */}
                 {/* LinkedIn */}
-                <div className='flex text-white text-xs font-extralight mt-3 h-10 justify-between items-center bg-blue-700 px-4 rounded-md w-full hover:scale-105 duration-300 cursor-pointer hover:shadow-md'>
-                    <div>   <i class="fab fa-linkedin mr-1"></i>  <span> Linkedin </span>   </div>
-                    <i class="fas fa-arrow-right"></i>
-                </div>
+                {/* <div className='flex text-white text-xs font-extralight mt-3 h-10 justify-between items-center bg-blue-700 px-4 rounded-md w-full hover:scale-105 duration-300 cursor-pointer hover:shadow-md'>
+                    <div>   <i className="fab fa-linkedin mr-1"></i>  <span> Linkedin </span>   </div>
+                    <i className="fas fa-arrow-right"></i>
+                </div> */}
 
                 
 
                 {/* Facebook */}
                 {/* Facebook */}
-                <div className='flex text-white text-xs font-extralight mt-3 h-10 justify-between items-center bg-blue-600 px-4 rounded-md w-full hover:scale-105 duration-300 cursor-pointer hover:shadow-md'>
-                    <div>   <i class="fab fa-facebook mr-1"></i>  <span> Facebook </span>   </div>
-                    <i class="fas fa-arrow-right"></i>
-                </div>
+                {/* <div className='flex text-white text-xs font-extralight mt-3 h-10 justify-between items-center bg-blue-600 px-4 rounded-md w-full hover:scale-105 duration-300 cursor-pointer hover:shadow-md'>
+                    <div>   <i className="fab fa-facebook mr-1"></i>  <span> Facebook </span>   </div>
+                    <i className="fas fa-arrow-right"></i>
+                </div> */}
             </div>
         </div>
 
