@@ -176,7 +176,7 @@ transform: CSS.Transform.toString(transform),
 
 
   return (
-        <div  style={style} className='w-full bg-gray-100 text-black text-sm px-3 py-4 rounded-md mt-4 self-center' id="">
+        <div  style={style} className='w-full bg-gray-100 text-black text-sm px-3 py-4 rounded-md mt-4 self-center'>
             <div className='flex justify-between'> 
                 <div ref={setNodeRef} {...attributes} {...listeners} style={{touchAction:'none'}}>
                     <span className='text-3xl'> = </span><span> link #</span><span>{index+1}</span>
@@ -232,7 +232,7 @@ transform: CSS.Transform.toString(transform),
                 <i className="fas fa-link absolute left-3 top-3"></i>
                 
                 {LinksData.filter(f=> f.id == LinkID)[0]?.typeInfo && LinksData.filter(f=> f.id == LinkID)[0]?.address?.length > 5 && !GetAdressValidation(LinkID) &&
-                 <div className='bg-red-600 px-2 text-center rounded mt-1 py-2 text-white w-40 text-xs'> Link of <span className='font-bold uppercase'>'{LinksData.filter(f=> f.id == LinkID)[0]?.typeInfo?.type}'</span>  is not appropiete. </div>
+                 <div className='bg-red-600 px-2 text-center rounded mt-1 py-2 text-white w-40 text-xs'> Link of <span className='font-bold uppercase italic'>{LinksData.filter(f=> f.id == LinkID)[0]?.typeInfo?.type}</span>  is not appropiete. </div>
                 }
              </div>
         </div>
