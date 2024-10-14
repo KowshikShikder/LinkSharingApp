@@ -53,6 +53,8 @@ function Page() {
     // User Authentication
     useEffect(() => {
 
+        setLoading({state:true, message:"User Updating"})
+
         auth.onAuthStateChanged(async(user)=> {
             
             if(user?.uid){
@@ -63,6 +65,8 @@ function Page() {
                 setLoading({state:false})
 
             }
+
+            setLoading({state:false, message:"User Updated"})
 
         })
         }, [onAuthStateChanged])
@@ -97,11 +101,11 @@ function Page() {
   // Update User & Fetch Data
   const UpdateUser = async()=>{
 
+    setLoading({state:true, message:"Updating User"})
 
 
 
     auth.onAuthStateChanged(async(user)=> {
-        setLoading({state:true, message:"Updating User"})
 
       if (user) {
         // User is signed in.
