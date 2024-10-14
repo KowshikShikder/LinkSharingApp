@@ -1,6 +1,7 @@
 'use client'
 
 import { db } from "@/Lib/firebase";
+import copy from "copy-to-clipboard";
 import { doc, getDoc } from "firebase/firestore";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -161,7 +162,7 @@ export default function Page({ params }) {
     }
 
 
-    
+
     
     
 

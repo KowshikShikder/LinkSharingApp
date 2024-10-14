@@ -21,7 +21,10 @@ function Page() {
     const [ShowPreview, setShowPreview] = useState(false)
     const [CreateUser, setCreateUser] = useState(false)
     const [HaveAccount, setHaveAccount] = useState(false)
-    const [loading, setLoading] = useState(false);
+    const [Loading, setLoading] = useState({
+                                                state:true,
+                                                message:"Loading..."
+                                            });
 
     // User Info
     const [UserInfo, setUserInfo] = useState(
@@ -56,6 +59,11 @@ function Page() {
                 console.log(user.uid)
                 UpdateUser()
             }
+            else{
+                setLoading({state:false})
+
+            }
+
         })
         }, [onAuthStateChanged])
 
@@ -66,13 +74,17 @@ function Page() {
     // Login Handler
     const handleLogin = async (e) => {
         e.preventDefault();
-        setLoading(true);
+
+        setLoading({state:true, message:"Loging In"})
     
     
         try {
             await signInWithEmailAndPassword(auth, UserInfo.Email, UserInfo.Password);
-    
+            
+            setLoading({state:false, message:"Loged In"})
+            
         } catch (err) {
+            setLoading({state:false, message:"Login Failed"})
             console.log(err);
         } finally {
             setLoading(false);
@@ -86,10 +98,12 @@ function Page() {
   const UpdateUser = async()=>{
 
 
+
+
     auth.onAuthStateChanged(async(user)=> {
+        setLoading({state:true, message:"Updating User"})
 
       if (user) {
-
         // User is signed in.
         console.log(`User is signed in with email ${auth.currentUser.email}`);
 
@@ -99,6 +113,7 @@ function Page() {
         const currentUserID = auth.currentUser.uid;
 
 
+        setLoading({state:true, message:"Fetching Data"})
         // Fetch Data from database
         try {
           const docRef = doc(db, "users", currentUserID);
@@ -109,6 +124,7 @@ function Page() {
             let FetchedData = docSnap.data();
 
 
+            setLoading({state:true, message:"Updating Local States"})
             // Store Data in Local State
             setUserInfo( 
                             {
@@ -126,14 +142,17 @@ function Page() {
             setLinksID(FetchedData.LinksIdContainer);
             setLinksData(FetchedData.LinksContainer);
 
+            setLoading({state:false})
 
 
             return  console.log(docSnap.data())
           } else {
+            setLoading({state:false, message:"No Data found"})
             return console.log("No User data")
           }
         } catch (err) {
           console.log(err);
+          setLoading({state:false, message:"No User found"})
           return  console.log("No User")
         }
 
@@ -141,6 +160,7 @@ function Page() {
 
       } else {
         // No user is signed in.
+        setLoading({state:false, message:"No User found"})
         console.log('No user is signed in.');
       }
     });
@@ -274,12 +294,13 @@ function Page() {
 
     const handleRegister = async (e) => {
         e.preventDefault();
-        // setLoading(true);
+        
+        setLoading({state:true, message:"Saving Data"})
 
-        console.log("Saving Data...")
 
 
                                                                                         
+        setLoading({state:true, message:"Checking Informations"})
 
         // Checking password
         if(!UserInfo.Password && UserInfo.userID == "" && CreateUser && !UserInfo.Email)
@@ -309,10 +330,12 @@ function Page() {
 
             // Create ID If user Wants 
             if(CreateUser && !auth.currentUser?.uid){
+
+                setLoading({state:true, message:"Checking ID"})
                 
-                console.log("Creating ID...")
                     var res = await createUserWithEmailAndPassword(auth, UserInfo.Email, UserInfo.Password);
-                console.log("ID Created")
+
+                setLoading({state:true, message:"ID Created"})
 
             }
 
@@ -321,7 +344,9 @@ function Page() {
             // Upload Image if Image Given
             var imgUrl;
             if(UserInfo.Image.file){
+                setLoading({state:true, message:"Uploading Image"})
                 imgUrl = await upload(UserInfo.Image.file);
+                setLoading({state:true, message:"Image Uploaded"})
             }
             
 
@@ -331,7 +356,8 @@ function Page() {
             // Store or Update Data to Database
             if(UserInfo.userID == ""){
 
-                console.log("Storing Data")
+                setLoading({state:true, message:"Storing Data"})
+
 
                     var newGaneratedID = CreateUser ? res.user.uid : `${UserInfo.FirstName}-${Date.now()}`;
                         
@@ -345,13 +371,18 @@ function Page() {
                         LinksContainer: LinksData,
                     });   
 
+                    
+                    setLoading({state:true, message:"Updating User ID"})
+                    
                     setUserInfo(  {...UserInfo, userID:  newGaneratedID})
                     console.log("Data Stored")
 
                 }
             
                 else{
-                    console.log("Data Updating")
+
+                    setLoading({state:true, message:"Updating Data"})
+
                     await updateDoc(doc(db, "users",  UserInfo.userID), {
                             firstName:UserInfo.FirstName,
                             lastName:UserInfo.LastName,
@@ -363,18 +394,21 @@ function Page() {
                         })
                         
 
-                    console.log("Your Data Updated succecfully")
+                        setLoading({state:true, message:"Data Updated"})
+
                 }
 
 
 
+                setLoading({state:false})
 
             
         } catch (err) {
+            setLoading({state:false})
             console.log(err);
 
         } finally {
-            setLoading(false);
+            setLoading({state:false})
         }
     };
 
@@ -386,6 +420,16 @@ function Page() {
   return (
 
     <>
+    {Loading.state && 
+        <div className="bg-black w-full h-full select-none touch-none fixed top-0 left-0 z-50 bg-opacity-60 flex items-center justify-center align-middle">
+            <div className="h-48 w-48 m-auto z-50">
+                <img src="/Loading.gif" alt="" className="h-full w-full object-cover" />
+                <p className="text-center font-bold mt-4 text-white text-xl">{Loading.message}</p>
+            </div>
+            <div className="w-full h-full fixed bg-black top-0 left-0 z-40 blur-lg bg-opacity-40"></div>
+        </div>
+    }
+
 
     {!ShowPreview && 
 
