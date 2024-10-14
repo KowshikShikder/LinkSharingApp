@@ -427,7 +427,7 @@ function Page() {
     {Loading.state && 
         <div className="bg-black w-full h-full select-none touch-none fixed top-0 left-0 z-50 bg-opacity-60 flex items-center justify-center align-middle">
             <div className="h-48 w-48 m-auto z-50">
-                <img src="/Loading.gif" alt="" className="h-full w-full object-cover" />
+                <img src="https://firebasestorage.googleapis.com/v0/b/linksharingapp-de794.appspot.com/o/Static%20Images%2FLoading.gif?alt=media&token=93ae5e9f-4240-4eb0-92f6-86d0ce725baa" alt="" className="h-full w-full object-cover" />
                 <p className="text-center font-bold mt-4 text-white text-xl">{Loading.message}</p>
             </div>
             <div className="w-full h-full fixed bg-black top-0 left-0 z-40 blur-lg bg-opacity-40"></div>
@@ -445,7 +445,7 @@ function Page() {
 
                 {/* logo Section */}
                 <div className="left-section flex">
-                    <img src="/Kahf Logo.jpg" alt="Lgog" className='h-6 w-6 mr-2' />
+                    <img src="https://firebasestorage.googleapis.com/v0/b/linksharingapp-de794.appspot.com/o/Static%20Images%2FKahf%20Logo.jpg?alt=media&token=f019d938-ff8a-4d11-be00-e47e983db21e" alt="Lgog" className='h-6 w-6 mr-2' />
                     <p className='hidden md:block text-black font-extrabold'> devlinks </p>
                 </div>
 
@@ -488,7 +488,7 @@ function Page() {
                     <div className='border text-black border-black rounded-3xl w-52 px-4 py-8 flex flex-col items-center' style={{minHeight:"420px"}}>  
                         
                         {/* User Profile */}
-                        <img src={UserInfo.Image.url ? UserInfo.Image.url : '/avatar.png'} alt="" className='h-16 w-16 rounded-full border-purple-800 border-2' />
+                        <img src={UserInfo.Image.url ? UserInfo.Image.url : 'https://firebasestorage.googleapis.com/v0/b/linksharingapp-de794.appspot.com/o/Static%20Images%2Fprofile%20icon.png?alt=media&token=5f4f2b88-e2d9-4483-a779-53f20053b9ef'} alt="" className='h-16 w-16 rounded-full border-purple-800 border-2' />
                         <p className='text-sm font-bold mt-3'> {UserInfo.FirstName} {UserInfo.LastName} </p>
                         <p className='text-xs mt-3 mb-4'> {UserInfo.Email} </p>
 
@@ -531,7 +531,7 @@ function Page() {
                             <div className='p-1 h-8 w-full grid items-center md:w-3/12 lg:w-4/12'> Profile Picture </div>
                             <div className='p-1 h-44 md:h-auto w-full md:w-5/12 lg:w-3/12 relative rounded-md overflow-hidden'> 
                                 <label htmlFor="profile-input">
-                                    <img src={UserInfo.Image.url ? UserInfo.Image.url : '/avatar.png'} alt="" className='h-full w-full absolute top-0 left-0 z-20 object-contain'/> 
+                                    <img src={UserInfo.Image.url ? UserInfo.Image.url : 'https://firebasestorage.googleapis.com/v0/b/linksharingapp-de794.appspot.com/o/Static%20Images%2Fprofile%20icon.png?alt=media&token=5f4f2b88-e2d9-4483-a779-53f20053b9ef'} alt="" className='h-full w-full absolute top-0 left-0 z-20 object-contain'/> 
                                     <div className='grid items-center text-center align-middle bg-black text-white opacity-60 h-full w-full cursor-pointer z-30 absolute top-0 left-0'>
                                         <div className=''>
                                             <i className="far fa-image text-2xl"></i>
@@ -711,7 +711,7 @@ function Page() {
             <div className='bg-white shadow-md border text-black border-black z-20 mt-20 rounded-3xl w-60 px-8 py-8 flex flex-col items-center' style={{minHeight:"420px"}}>  
                 
                 {/* User Info */}
-                <img src={UserInfo.Image.url ? UserInfo.Image.url : '/avatar.png'} alt="" className='h-16 w-16 rounded-full border-purple-800 border-2' />
+                <img src={UserInfo.Image.url ? UserInfo.Image.url : 'https://firebasestorage.googleapis.com/v0/b/linksharingapp-de794.appspot.com/o/Static%20Images%2Fprofile%20icon.png?alt=media&token=5f4f2b88-e2d9-4483-a779-53f20053b9ef'} alt="" className='h-16 w-16 rounded-full border-purple-800 border-2' />
                 <p className='text-sm font-bold mt-3'>  {UserInfo.FirstName} {UserInfo.LastName} </p>
                 <p className='text-xs mt-3 mb-4'> {UserInfo.Email} </p>
 

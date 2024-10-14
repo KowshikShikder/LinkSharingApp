@@ -187,7 +187,7 @@ return (
             
             
             <div className="left-section flex">
-                <img src="/Kahf Logo.jpg" alt="Lgog" className='h-6 w-6 mr-2' />
+                <img src="https://firebasestorage.googleapis.com/v0/b/linksharingapp-de794.appspot.com/o/Static%20Images%2FKahf%20Logo.jpg?alt=media&token=f019d938-ff8a-4d11-be00-e47e983db21e" alt="Lgog" className='h-6 w-6 mr-2' />
                 <p className='hidden md:block text-black font-extrabold'> devlinks </p>
             </div>
 
@@ -206,7 +206,7 @@ return (
         {/* Mobile Holder Section */}
 
         <div className='bg-white shadow-md border text-black border-black z-20 my-20 rounded-3xl w-60 px-8 py-8 flex flex-col items-center' style={{minHeight:"420px"}}>  
-            <img src={UserInfo.Image.url ? UserInfo.Image.url : '/avatar.png'} alt="" className='h-16 w-16 rounded-full border-purple-800 border-2' />
+            <img src={UserInfo.Image.url ? UserInfo.Image.url : 'https://firebasestorage.googleapis.com/v0/b/linksharingapp-de794.appspot.com/o/Static%20Images%2Fprofile%20icon.png?alt=media&token=5f4f2b88-e2d9-4483-a779-53f20053b9ef'} alt="" className='h-16 w-16 rounded-full border-purple-800 border-2' />
             <p className='text-sm font-bold mt-3'>  {UserInfo.FirstName} {UserInfo.LastName} </p>
             <p className='text-xs mt-3 mb-4'> {UserInfo.Email} </p>
 
@@ -218,7 +218,7 @@ return (
             {
             Loading == "Loading" ? 
                 <div className="h-36 w-full mt-6">
-                    <img src="/Loading.gif" alt="" className="h-full w-full object-cover" />
+                    <img src="https://firebasestorage.googleapis.com/v0/b/linksharingapp-de794.appspot.com/o/Static%20Images%2FLoading.gif?alt=media&token=93ae5e9f-4240-4eb0-92f6-86d0ce725baa" alt="" className="h-full w-full object-cover" />
                     <p className="text-center font-bold mt-4">Loading...</p>
                 </div>
 
@@ -236,7 +236,7 @@ return (
 
             :
                 <div className="h-36 w-full mt-6">
-                    <img src="/NotFound.gif" alt="" className="h-full w-full object-cover" />
+                    <img src="https://firebasestorage.googleapis.com/v0/b/linksharingapp-de794.appspot.com/o/Static%20Images%2FNotFound.gif?alt=media&token=273a5410-18fc-4d0a-9f98-71d49e51c86f" alt="" className="h-full w-full object-cover" />
                     <p className="text-center font-bold mt-4">Not Found</p>
                 </div>
             }
