@@ -537,7 +537,6 @@ function Page() {
                                             <i className="far fa-image text-2xl"></i>
                                             <p> Change Image </p>
                                         </div>
-                                        
                                     </div>
                                 </label>
                                 <input type="file" accept="image/png, image/bmp, image/jpeg" id='profile-input' className='h-full w-full cursor-pointer bg-transparent hidden' onChange={myImage => setUserInfo({...UserInfo, Image: {file: myImage.target.files[0], url: URL.createObjectURL(myImage.target.files[0])}})} />
