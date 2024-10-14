@@ -177,7 +177,7 @@ const style = {
                 <i className="fas fa-link absolute left-3 top-3"></i>
                 
                 {LinksData.filter(f=> f.id == LinkID)[0]?.typeInfo && !GetAdressValidation(LinkID) &&
-                 <div className='bg-red-600 px-2 text-center rounded mt-1 py-2 text-white w-56 text-xs'> Link of <span className='font-bold uppercase italic'> {LinksData.filter(f=> f.id == LinkID)[0]?.typeInfo?.type} </span>  is not appropiete. </div>
+                 <div className='bg-red-600 px-2 text-center rounded mt-1 py-2 text-white w-56 text-xs'> Link of <span className='font-bold uppercase italic'> {LinksData.filter(f=> f.id == LinkID)[0]?.typeInfo?.type} </span>  is not appropriate. </div>
                 }
              </div>
         </div>

@@ -520,7 +520,7 @@ function Page() {
                     //  Profile Edit Section
                     <div className="rounded bg-white w-full md:w-7/12 p-6 px-8  flex flex-col">
                         <p className='text-lg font-bold text-black'> Profile Details </p>
-                        <p className='text-xs mt-1 text-stone-600'> Add your details to create a personal touch to ypur profile. </p>
+                        <p className='text-xs mt-1 text-stone-600'> Add your details to create a personal touch to your profile. </p>
                 
 
 
@@ -540,7 +540,7 @@ function Page() {
                                         
                                     </div>
                                 </label>
-                                <input type="file" id='profile-input' className='h-full w-full cursor-pointer bg-transparent hidden' onChange={myImage => setUserInfo({...UserInfo, Image: {file: myImage.target.files[0], url: URL.createObjectURL(myImage.target.files[0])}})} />
+                                <input type="file" accept="image/png, image/bmp, image/jpeg" id='profile-input' className='h-full w-full cursor-pointer bg-transparent hidden' onChange={myImage => setUserInfo({...UserInfo, Image: {file: myImage.target.files[0], url: URL.createObjectURL(myImage.target.files[0])}})} />
                             </div>
                             <div className='p-1 h-10 w-full text-xs grid justify-center items-center md:w-3/12 lg:w-4/12'> Image must be bellow 1024×1024px. Use PNG, JPG or BMP format.  </div>
                         </div>
@@ -588,7 +588,7 @@ function Page() {
                             {!HaveAccount && !UserInfo.userID &&
                                 <div className='flex justify-start align-baseline items-center text-left w-full ml-4 mt-4'>
                                     <input defaultChecked={CreateUser} onClick={()=> setCreateUser(prev=> !prev)} type='checkbox' className='border h-5 w-5 outline-purple-600 border-gray-300  px-3 py-2 rounded pl-8' onChange={data=> setUserInfo({...UserInfo,[data.target.name]:data.target.value}) } />
-                                    <p className='inline-block ml-6 self-start'> Create Account? </p>
+                                    <p className='inline-block ml-6 self-start'> Create account? </p>
                                 </div>
                             }
 
@@ -597,7 +597,7 @@ function Page() {
                             {!CreateUser && !UserInfo.userID &&
                                 <div className='flex justify-start align-baseline items-center text-left w-full ml-4 mt-4'>
                                     <input defaultChecked={HaveAccount} onClick={()=> {setHaveAccount(prev=> !prev); HaveAccount && setCreateUser(false)}} type='checkbox' className='border h-5 w-5 outline-purple-600 border-gray-300  px-3 py-2 rounded pl-8' onChange={data=> setUserInfo({...UserInfo,[data.target.name]:data.target.value}) } />
-                                    <p className='inline-block ml-6 self-start'> Have an Account? </p>
+                                    <p className='inline-block ml-6 self-start'> Already have an account? </p>
                                 </div>
                             }
 

@@ -211,10 +211,6 @@ return (
             <p className='text-xs mt-3 mb-4'> {UserInfo.Email} </p>
 
 
-
-
-
-
             {
             Loading == "Loading" ? 
                 <div className="h-36 w-full mt-6">
@@ -240,11 +236,6 @@ return (
                     <p className="text-center font-bold mt-4">Not Found</p>
                 </div>
             }
-
-
-
-
-
         </div>
     </div>
 
